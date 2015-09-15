@@ -1,0 +1,71 @@
+<html>
+<head>
+<style>
+	body{
+		margin:0;	
+	}
+
+	#players{
+		position:absolute;
+		left:200px;
+		top:50px;
+		width:400px;
+		height:800px;
+		border:2px solid black;	
+	}
+	
+	#register{
+		position:absolute;
+		left:700px;
+		top:100px;
+		width:200px;
+		height:200px;
+		border:2px solid black;	
+	}
+
+</style>
+</head>
+<body>
+
+<div id="players"></div>
+<div id="register">
+	<p>Navn</p>
+    <input id="name" type="text">
+	<button onClick="addMe()">Indsend</button>
+</div>
+<script>
+
+	var user = {navn:""}
+
+	function fancyCode(navn){
+		if(user.navn != navn && user.navn != ""){
+			console.log("inviting",navn,"to game");
+		}
+	}
+	var xmlhttp = new XMLHttpRequest();
+	
+	function getPlayer(){
+		console.log("getting players")
+		xmlhttp.onreadystatechange = function(){
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			document.getElementById("players").innerHTML = xmlhttp.responseText;
+			}
+		}
+		xmlhttp.open('GET', 'stinker.php',true);
+		xmlhttp.send();
+	}
+
+	function addMe(){
+		
+		var name = document.getElementById("name").value;
+		user.navn = name;
+		console.log("insterting name",name);
+		xmlhttp.open('GET', 'stinker.php?navn='+name,true);
+		xmlhttp.send();		
+	}
+	
+	window.setInterval(function(){getPlayer()},1000);
+	
+</script>
+</body>
+</html>
